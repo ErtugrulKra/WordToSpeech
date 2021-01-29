@@ -1,11 +1,21 @@
 from flask import Flask
 import flask
 import os
+import platform
 from flask.helpers import send_file
 from flask_restful import Api, Resource
 import pyttsx3 as sp
 
-engine = sp.init("espeak")
+def initSpeaker():
+    sysPlatform=platform.system()
+    swtich={
+        "Linux":"espeak",
+        "Darwin":"nsss",
+        "Windows":"sapi5"
+    }
+    return sp.init(swtich.get(sysPlatform))
+
+engine = initSpeaker()
 
 wordapp=Flask(__name__)
 api = Api(wordapp)
